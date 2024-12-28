@@ -19,11 +19,13 @@ stubs = [
     "osEepromLongWriteVC"
 ]
 
+# Before the dma_load while the registers are fresh
 [[patches.hook]]
 func = "load_to_fixed_pool_addr"
 text = "    load_overlays(ctx->r5, ctx->r4, ctx->r6 - ctx->r5);"
 before_vram = 0x800EC028
 
+# Also before a dma_load
 [[patches.hook]]
 func = "load_engine_code_segment"
 text = "    load_overlays(ctx->r5, ctx->r4, ctx->r6 - ctx->r5);"
