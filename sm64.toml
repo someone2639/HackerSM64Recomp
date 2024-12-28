@@ -2,7 +2,7 @@
 entrypoint_name = "entry_point"
 entrypoint = 0x800e9780
 # Paths are relative to the location of this config file.
-elf_path = "build/us_n64/sm64.elf"
+elf_path = "sm64.elf"
 output_func_path = "RecompiledFuncs"
 
 [patches]
