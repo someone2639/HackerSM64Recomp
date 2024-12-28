@@ -8,6 +8,8 @@ RSPRECOMP := N64Recomp/build/RSPRecomp
 ROM := sm64.z64
 ELF := sm64.elf
 
+DUMMY != mkdir -p build
+
 build/version.h: $(ROM)
 	python tools/makeVersion.py $< > $@
 
@@ -16,14 +18,14 @@ RecompiledFuncs/: $(ELF)
 	$(MAKE) -C N64Recomp/build
 	$(N64RECOMP) sm64.toml
 	$(RSPRECOMP) aspMain.toml
-	CC=clang CXX=clang++ cmake -B build -S .
+	CC=clang CXX=clang++ cmake -B build -S . -GNinja
 
 build/HackerSM64Recompiled: RecompiledFuncs/ build/version.h
-	$(MAKE) -C build
+	+ninja -C build
 
 
 clean:
-	rm -r -f build
+	rm -r -f build RecompiledFuncs
 reset:
 	rm -r -f ~/.config/HackerSM64Recompiled
 
