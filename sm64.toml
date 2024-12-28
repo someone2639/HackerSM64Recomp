@@ -1,0 +1,30 @@
+[input]
+entrypoint_name = "entry_point"
+entrypoint = 0x800e9780
+# Paths are relative to the location of this config file.
+elf_path = "build/us_n64/sm64.elf"
+output_func_path = "RecompiledFuncs"
+
+[patches]
+ignored = [
+    "ipl3_entry",
+]
+stubs = [
+# VC functions
+    "osEepromReadVC",
+    "osEepromWriteVC",
+    "__osEepStatusVC",
+    "osEepromProbeVC",
+    "osEepromLongReadVC",
+    "osEepromLongWriteVC"
+]
+
+[[patches.hook]]
+func = "load_to_fixed_pool_addr"
+text = "    load_overlays(ctx->r5, ctx->r4, ctx->r6 - ctx->r5);"
+before_vram = 0x800EC028
+
+[[patches.hook]]
+func = "load_engine_code_segment"
+text = "    load_overlays(ctx->r5, ctx->r4, ctx->r6 - ctx->r5);"
+before_vram = 0x800EC1E4
